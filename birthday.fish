@@ -3,21 +3,23 @@ function birthday
   set name $argv[1]
   set name_length (string length $name)
 
-  set left_space_length (math 15 - (math -s0 $name_length/2))
-  set left_str ' (     (   *     (('
-  for i in (seq 1 $left_space_length)
-    set left_str (string join '' $left_str ' ')
-  end
+  if test (string length $name) && test (echo $name | env LANG=C grep '^[[:cntrl:][:print:]]*$')
 
-  set right_space_length (math 16 - (math -s0 (math $name_length + 1) / 2 ))
-  set right_str '))        )    ('
-  for i in (seq 1 $right_space_length)
-    set right_str (string join '' ' ' $right_str)
-  end
-
-  set name_line (string join $name $left_str $right_str)
-
-  echo "
+    set left_space_length (math 15 - (math -s0 $name_length/2))
+    set left_str ' (     (   *     (('
+    for i in (seq 1 $left_space_length)
+      set left_str (string join '' $left_str ' ')
+    end
+    
+    set right_space_length (math 16 - (math -s0 (math $name_length + 1) / 2 ))
+    set right_str '))        )    ('
+    for i in (seq 1 $right_space_length)
+      set right_str (string join '' ' ' $right_str)
+    end
+    
+    set name_line (string join $name $left_str $right_str)
+    
+    echo "
  )         *             !  !  !  !  !  !     (                   )
  (          (    *       |V||V||V||V||V||V|     )       )         (
   )   *      )           | || || || || || |    (       (   *       )
@@ -51,4 +53,10 @@ $name_line
     ((}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*))
  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   "
+  else
+
+    echo "名前を英語で入力しましょう"
+    echo "例) birthday Mr.ABE"
+
+  end
 end
